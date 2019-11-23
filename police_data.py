@@ -88,3 +88,18 @@ annual_search_conducted = police_data.search_conducted.resample('A').mean()
 annual_search_comparisions = pd.concat([annual_drug_rate, annual_search_conducted], axis=1)
 annual_search_comparisions.plot(subplots=True)
 plt.show()
+
+#comparing the total number of females and males traffic violation as per the races by means of frequency table
+races_gender = pd.crosstab(police_data.driver_race, police_data.driver_gender)
+races_gender.plot(kind='bar', stacked=True)
+#comparing the districts with traffic violation by means of frequency table
+distruct_violation = pd.crosstab(police_data.district, police_data.violation)
+distruct_violation.plot(kind='bar', stacked=True)
+plt.show()
+
+#checking for the stop duration
+print(police_data.stop_duration.unique())
+mapping = {'0-15 Min': 8, '16-30 Min': 23, '30+ Min': 45}
+police_data['stop_minutes'] = police_data.stop_duration.map(mapping)
+print(police_data.stop_minutes)
+print('#################### End of Analysing #############')
