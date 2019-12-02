@@ -3,13 +3,13 @@ import matplotlib.pyplot as plt
 
 # reading the json file as dataframe using read_json
 bt = pd.read_csv('./csv/bitcoin_2017.csv')
-print(bt.info(), 'General information of the data frame\n')
+print(bt.info(), 'General information of the dataframe\n')
 
 # We dont need the coins which  dont have US market
 # Soo filtering only those coins that have US market
 just_usd_market = bt[['id', 'market_cap_usd']]
 cap = just_usd_market[just_usd_market.market_cap_usd > 0]
-print(cap.count(), 'Checking the total observations of the market cap usd.')
+print(cap.count(), 'Checking the total observations of the market cap usd\n')
 
 #calculate the percentage in US market using assign function
 #visualizing it in the bar plot with the log scale in y axis, cause percentage is very small when compared to tht US market
@@ -19,16 +19,13 @@ cap10 = cap10.assign(market_cap_perc= lambda x : (x.market_cap_usd/total_sum)*10
 cap10.plot.bar(title='Top 10 market capitalization', logy=True)
 plt.ylabel('% of total cap')
 plt.xlabel('USD')
-# plt.show()
+plt.show()
 
 #checking the changes in the market cap for 24h time period
 volatility = bt[['id', 'percent_change_24h', 'percent_change_7d']]
 volatility = volatility.set_index('id')
 volatility = volatility.sort_values('percent_change_24h')
 print(volatility.head(), '\nChecking the market changes per 24h time period\n')
-print('it looks like the changes are huge\n')
-
-
 
 def top10_winners_loosers(volatility_series, title):
   # Making the subplot and the figure for two side by side plots, where 10 represents width and 6 represents height
