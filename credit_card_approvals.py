@@ -39,19 +39,36 @@ for col in df.columns:
 print('\nreplacing the object type in to integer type using label encoder\n', df.head())
 
 #seperating the feature variables and target variable
-X = df.iloc[:, 0:13]
-y = df.iloc[:, 13]
-
-# #if certain values in the features is high, it would have much impact on deciding the credit approval
-# # x- mean / variance, we use this formula to bind the values closer
-# for col in X.columns:
-# 	X[col] = scale(df[col])
+X = scale(df.drop('approved', axis=1).values)
+y = df.approved.values
 
 #splitting the datasets in to train data and test data
-X_train, y_train, X_test, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
-print(X_train.shape, y_train.shape)
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.33, random_state=42)
 
-#using logistic regression, since credit card approval is of classification problem 
+#using logistic regression, since credit card approval is of classification problem
+#fitting the model using train datasets
 logreg = LogisticRegression()
 logreg.fit(X_train, y_train)
 
+#predicting the results using test datasets
+y_predict = logreg.predict(X_test)
+
+#model performance calculation
+print("Accuracy of logistic regression classifier: ", logreg.score(X_test, y_test))
+print('\nConfusion matrix\n', confusion_matrix(y_predict, y_test))
+
+#hyperparameters tuning
+#Define the grid of values for tol and max_iter
+tol = [0.01,0.001,0.0001]
+max_iter = [100,150,200]
+
+# Create a dictionary where tol and max_iter are keys and the lists of their values are corresponding values
+param_grid = {'tol': tol, 'max_iter': max_iter}
+
+# Instantiate GridSearchCV with the required parameters
+grid_model = GridSearchCV(estimator=logreg, param_grid=param_grid, cv=5)
+cv_results = grid_model.fit(X, y)
+
+best_params, best_score = cv_results.best_params_, cv_results.best_score_
+print("The best params are", best_params)
+print("The best scores are", best_score)
