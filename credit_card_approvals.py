@@ -2,7 +2,6 @@ import numpy as np
 import pandas as pd
 from sklearn.preprocessing import LabelEncoder, scale
 from sklearn.model_selection import train_test_split, GridSearchCV
-# from sklearn.ensemble import VotingClassifier, RandomForestClassifier>
 from sklearn.linear_model import LogisticRegression
 from sklearn.metrics import confusion_matrix
 
