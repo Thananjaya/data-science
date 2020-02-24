@@ -54,3 +54,7 @@ predictions = model.predict(img)
 print(class_names[np.argmax(predictions)])
 plt.imshow(test_data[9], cmap=plt.cm.binary)
 plt.show()
+
+### way to save the model and load the model for future purpose
+# model.save('fashion_mnist.h5')
+# model = keras.models.load_model('fashion_mnist.h5')
